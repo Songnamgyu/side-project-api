@@ -1,6 +1,8 @@
 package com.sng.sp.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sng.sp.domain.enums.PublicStatus;
+import com.sng.sp.domain.enums.ShareStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,8 +40,8 @@ public class Users {
     @JsonIgnore
     private PublicStatus publicStatus;
 
-    @Enumerated
-    @JsonIgnore(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private ShareStatus shareStatus;
 
     private LocalDateTime createdAt;

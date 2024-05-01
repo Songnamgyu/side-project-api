@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sng.sp.filter.JsonUsernamePasswordAuthenticationFilter;
 import com.sng.sp.handler.LoginFailureHandler;
 import com.sng.sp.handler.LoginSuccessJWTProvideHandler;
+import com.sng.sp.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +42,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer configure() {
         return (web ->
                 web.ignoring()
-                        .requestMatchers(toH2Console()).requestMatchers("/h2-console/**"))
+                        .requestMatchers(toH2Console()).requestMatchers("/h2-console/**"));
     }
 
     /**
