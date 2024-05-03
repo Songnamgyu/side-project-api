@@ -44,5 +44,5 @@ public class Users {
     @JsonIgnore
     private ShareStatus shareStatus;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt; // 생성시간
 }
