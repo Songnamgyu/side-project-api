@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -45,4 +46,27 @@ public class Users {
     private ShareStatus shareStatus;
 
     private LocalDateTime createdAt; // 생성시간
+
+    //jwt 토큰 필드 추가
+    @Column(length = 1000)
+    private String refreshToken;
+
+    /**
+     * RefreshToken 업데이트 메소드
+     */
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    /**
+     * RefreshToken 삭제 메소드
+     */
+    public void deleteRefreshToken() {
+        this.refreshToken = null;
+    }
+
+    //== 패스워드 암호화 ==//
+    public void encodePassword(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(password);
+    }
 }
