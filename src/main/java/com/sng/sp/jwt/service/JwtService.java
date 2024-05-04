@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface JwtService {
 
     String createAccessToken(String email);
-    String refreshToken();
+    String createRefreshToken();
 
     void updateRefreshToken(String email, String refreshToken);
 

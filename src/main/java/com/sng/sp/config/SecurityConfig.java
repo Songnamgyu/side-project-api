@@ -2,9 +2,13 @@ package com.sng.sp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sng.sp.filter.JsonUsernamePasswordAuthenticationFilter;
+import com.sng.sp.filter.JwtAuthenticationProcessingFilter;
 import com.sng.sp.handler.LoginFailureHandler;
 import com.sng.sp.handler.LoginSuccessJWTProvideHandler;
+import com.sng.sp.jwt.service.JwtService;
+import com.sng.sp.repository.UsersRepository;
 import com.sng.sp.service.impl.UserDetailsServiceImpl;
+import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +36,9 @@ public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final ObjectMapper objectMapper;
+
+    private final JwtService jwtService;
+    private final UsersRepository usersRepository;
 
     /**
      * h2 db 접근 허용
@@ -64,7 +71,17 @@ public class SecurityConfig {
                         .invalidateHttpSession(true))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
+        http
+                .addFilterAfter(jsonUsernamePasswordLoginFilter(), LogoutFilter.class) // 추가 : 커스터마이징 된 필터를 SpringSecurityFilterChain에 등록
+                .addFilterBefore(jwtAuthenticationProcessingFilter(), JsonUsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter(){
+        JwtAuthenticationProcessingFilter jsonUsernamePasswordLoginFilter = new JwtAuthenticationProcessingFilter(jwtService, usersRepository);
+
+        return jsonUsernamePasswordLoginFilter;
     }
 
     /**
@@ -109,7 +126,7 @@ public class SecurityConfig {
 
     @Bean
     public LoginSuccessJWTProvideHandler loginSuccessJWTProvideHandler(){
-        return new LoginSuccessJWTProvideHandler();
+        return new LoginSuccessJWTProvideHandler(jwtService, usersRepository);
     }
 
     @Bean

@@ -62,7 +62,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String refreshToken() {
+    public String createRefreshToken() {
         return JWT.create()
                 .withSubject(REFRESH_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(System.currentTimeMillis() + refreshTokenValidityInSeconds))
