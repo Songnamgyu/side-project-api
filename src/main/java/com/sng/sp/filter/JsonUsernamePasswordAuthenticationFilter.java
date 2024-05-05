@@ -28,11 +28,11 @@ public class JsonUsernamePasswordAuthenticationFilter extends AbstractAuthentica
     private static final String PASSWORD_KEY = "password";
     private final ObjectMapper objectMapper;
 
-    private static final AntPathRequestMatcher DEFALUT_LOGIN_PATH_REQUEST_MATCHER =
+    private static final AntPathRequestMatcher DEFAULT_LOGIN_PATH_REQUEST_MATCHER =
             new AntPathRequestMatcher(DEFAULT_LOGIN_REQUEST_URL, HTTP_METHOD);
 
     public JsonUsernamePasswordAuthenticationFilter(ObjectMapper objectMapper) {
-        super(DEFALUT_LOGIN_PATH_REQUEST_MATCHER);
+        super(DEFAULT_LOGIN_PATH_REQUEST_MATCHER);
         this.objectMapper = objectMapper;
 
     }

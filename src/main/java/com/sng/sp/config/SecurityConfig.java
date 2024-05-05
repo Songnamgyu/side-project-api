@@ -61,7 +61,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .addFilterAfter(jsonUsernamePasswordLoginFilter(), LogoutFilter.class)
                 .authorizeHttpRequests(
                         (authorize) -> authorize.requestMatchers("/signup", "/", "/login").permitAll()
                                 .anyRequest().authenticated()
@@ -77,12 +76,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter(){
-        JwtAuthenticationProcessingFilter jsonUsernamePasswordLoginFilter = new JwtAuthenticationProcessingFilter(jwtService, usersRepository);
-
-        return jsonUsernamePasswordLoginFilter;
-    }
 
     /**
      * 인증 관리자 관련 설
@@ -94,8 +87,10 @@ public class SecurityConfig {
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 
-        return daoAuthenticationProvider();
+        return daoAuthenticationProvider;
     }
+
+
 
     /**
      * PASSWORD_ENCODER
@@ -143,5 +138,12 @@ public class SecurityConfig {
         return jsonUsernamePasswordLoginFilter;
 
     }
+    @Bean
+    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter(){
+        JwtAuthenticationProcessingFilter jsonUsernamePasswordLoginFilter = new JwtAuthenticationProcessingFilter(jwtService, usersRepository);
+
+        return jsonUsernamePasswordLoginFilter;
+    }
+
 
 }
