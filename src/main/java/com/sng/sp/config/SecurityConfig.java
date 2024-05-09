@@ -63,19 +63,19 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
+//                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable())
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(
                         (authorize) -> authorize
-//                                .requestMatchers("/signup", "/", "/login","/h2-console/**").permitAll()
-                                .requestMatchers(antMatcher("/swagger-ui/**"),
-                                        antMatcher("/swagger-ui.html"),
-                                        antMatcher("/v3/**"),
-                                        antMatcher("/h2-console/**"),
-                                        antMatcher("/"),
-                                        antMatcher("/signup/*"),
-                                        antMatcher("/login")
-                                        ).permitAll()
+                                .requestMatchers("/signup", "/", "/login","/h2-console/**").permitAll()
+//                                .requestMatchers(antMatcher("/swagger-ui/**"),
+//                                        antMatcher("/swagger-ui.html"),
+//                                        antMatcher("/v3/**"),
+//                                        antMatcher("/h2-console/**"),
+//                                        antMatcher("/"),
+//                                        antMatcher("/signup"),
+//                                        antMatcher("/login")
+//                                        ).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .logout((logout) -> logout
