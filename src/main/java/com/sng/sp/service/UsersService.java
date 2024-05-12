@@ -19,7 +19,7 @@ public class UsersService {
         users.setGender("M");
         users.setUsername("aiden");
 
-        em.persist(users);
+//        em.persist(users);
     }
 
 

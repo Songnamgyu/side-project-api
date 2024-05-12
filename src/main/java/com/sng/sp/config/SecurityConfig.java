@@ -28,6 +28,13 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
@@ -55,27 +62,35 @@ public class SecurityConfig {
                         .requestMatchers(toH2Console()).requestMatchers("/h2-console/**"));
     }
 
+    // ⭐️ CORS 설정
+    CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedHeaders(Collections.singletonList("*"));
+            config.setAllowedMethods(Collections.singletonList("*"));
+            config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000")); // ⭐️ 허용할 origin
+            config.setAllowCredentials(true);
+            return config;
+        };
+    }
+
     /**
      * 특정 HTTP 요청에 대한 웹 기반 보안 구성
      */
 
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
+//                .cors(c -> c.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
                 .httpBasic(AbstractHttpConfigurer::disable)
-//                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable())
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(
                         (authorize) -> authorize
                                 .requestMatchers("/signup", "/", "/login","/h2-console/**").permitAll()
-//                                .requestMatchers(antMatcher("/swagger-ui/**"),
-//                                        antMatcher("/swagger-ui.html"),
-//                                        antMatcher("/v3/**"),
-//                                        antMatcher("/h2-console/**"),
-//                                        antMatcher("/"),
-//                                        antMatcher("/signup"),
-//                                        antMatcher("/login")
-//                                        ).permitAll()
+                                .requestMatchers( CorsUtils::isCorsRequest).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .logout((logout) -> logout
@@ -131,6 +146,7 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(provider);
     }
+
 
     @Bean
     public LoginSuccessJWTProvideHandler loginSuccessJWTProvideHandler(){
