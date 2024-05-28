@@ -1,7 +1,7 @@
 package com.sng.sp.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sng.sp.domain.enums.PublicStatus;
+import com.sng.sp.domain.enums.Role;
 import com.sng.sp.domain.enums.ShareStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -39,7 +39,7 @@ public class Users {
 
     @Enumerated(EnumType.STRING)
     @JsonIgnore
-    private PublicStatus publicStatus;
+    private Role role;
 
     @Enumerated(EnumType.STRING)
     @JsonIgnore
@@ -69,4 +69,5 @@ public class Users {
     public void encodePassword(PasswordEncoder passwordEncoder){
         this.password = passwordEncoder.encode(password);
     }
+
 }
