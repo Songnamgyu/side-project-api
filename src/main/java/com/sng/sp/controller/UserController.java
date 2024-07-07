@@ -26,11 +26,10 @@ public class UserController {
     private final JwtService jwtService;
     @PostMapping("/signup")
     public ResultDto signIn( @RequestBody MemberSignInRequestDto memberSignInRequestDto) {
-        usersService.signIn(memberSignInRequestDto);
-        return new ResultDto<Object>();
+        return usersService.signIn(memberSignInRequestDto);
     }
 
-//    @PostMapping("/login")
+   @PostMapping("/login")
     public ResultDto login(@RequestBody MemberSignInRequestDto param) {
         UserDetails users = usersServiceImpl.loadUserByUsername(param.getEmail());
         System.out.println("users = " + users);

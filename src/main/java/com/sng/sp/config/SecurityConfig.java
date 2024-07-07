@@ -8,16 +8,13 @@ import com.sng.sp.handler.LoginSuccessJWTProvideHandler;
 import com.sng.sp.jwt.service.JwtService;
 import com.sng.sp.repository.UsersRepository;
 import com.sng.sp.service.impl.UserDetailsServiceImpl;
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -33,9 +30,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
@@ -186,7 +181,6 @@ public class SecurityConfig {
 
         return jsonUsernamePasswordLoginFilter;
     }
-
 
 
 }
