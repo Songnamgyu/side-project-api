@@ -1,5 +1,6 @@
 package com.sng.sp.filter;
 
+import com.sng.sp.controller.UserController;
 import com.sng.sp.domain.UserDetailsImpl;
 import com.sng.sp.domain.entity.Users;
 import com.sng.sp.jwt.service.JwtService;
@@ -37,6 +38,7 @@ public class JwtAuthenticationProcessingFilter  extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(request.getRequestURI().equals(NO_CHECK_URL)) {
             filterChain.doFilter(request, response);
+
             return;//안해주면 아래로 내려가서 계속 필터를 진행해버림
         }
 
